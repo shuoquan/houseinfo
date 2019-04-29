@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:margin-top="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>二手房信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="../static/js/jquery.pagination.js"></script>
+{#    <link rel="stylesheet" href="../static/css/pagination.css">#}
+ <style>
+.m-style {
+    position: relative;
+    text-align: center;
+    zoom: 1;
+}
+
+.m-style:before,
+.m-style:after {
+    content: "";
+    display: table;
+}
+
+.m-style:after {
+    clear: both;
+    overflow: hidden;
+}
+
+{#.m-style span {#}
+{#    float: left;#}
+{#    margin: 0 5px;#}
+{#    width: 38px;#}
+{#    height: 38px;#}
+{#    line-height: 38px;#}
+{#    color: #bdbdbd;#}
+{#    font-size: 14px;#}
+{#}#}
+
+.m-style .active {
+    float: left;
+    margin: 0 5px;
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    background: #e91e63;
+    color: #fff;
+    font-size: 14px;
+    border: 1px solid #e91e63;
+}
+
+.m-style a {
+    float: left;
+    margin: 0 5px;
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    background: #fff;
+    border: 1px solid #ebebeb;
+    color: #bdbdbd;
+    font-size: 14px;
+}
+
+.m-style a:hover {
+    color: #fff;
+    background: #e91e63;
+}
+
+.m-style .next,
+.m-style .prev {
+    font-family: "Simsun";
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.now,
+.count {
+    padding: 0 5px;
+    color: #f00;
+}
+
+.eg img {
+    max-width: 800px;
+    min-height: 500px;
+}
+
+{#input {#}
+{#    float: left;#}
+{#    margin: 0 5px;#}
+{#    width: 38px;#}
+{#    height: 38px;#}
+{#    line-height: 38px;#}
+{#    text-align: center;#}
+{#    background: #fff;#}
+{#    border: 1px solid #ebebeb;#}
+{#    outline: none;#}
+{#    color: #bdbdbd;#}
+{#    font-size: 14px;#}
+{#}#}
+
+ </style>
+
+</head>
+<body>
+<br>
+<div class="container">
+    <div class="choose">
+        <label for="区域">所在区域
+            <select id="region" name="region">
+                <option value="选项">--</option>
+                <option value="嘉定">嘉定</option>
+                <option value="奉贤">奉贤</option>
+                <option value="宝山">宝山</option>
+                <option value="徐汇">徐汇</option>
+                <option value="普陀">普陀</option>
+                <option value="杨浦">杨浦</option>
+                <option value="松江">松江</option>
+                <option value="浦东">浦东</option>
+                <option value="虹口">虹口</option>
+                <option value="长宁">长宁</option>
+                <option value="闵行">闵行</option>
+                <option value="闸北">闸北</option>
+                <option value="青浦">青浦</option>
+                <option value="静安">静安</option>
+                <option value="黄埔">黄埔</option>
+            </select>
+        </label>&nbsp&nbsp&nbsp&nbsp;
+        <label for="室">室
+            <select id="room" name="room">
+                <option value="选项">--</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">大于3</option>
+            </select>
+        </label>&nbsp&nbsp&nbsp&nbsp
+        <label for="厅">厅
+            <select id="living" name="living">
+                <option value="选项">--</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">大于2</option>
+            </select>
+        </label>&nbsp&nbsp&nbsp&nbsp
+        <label for="卫">卫
+            <select id="bath" name="bath">
+                <option value="选项">--</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">大于2</option>
+            </select>
+        </label>&nbsp&nbsp&nbsp&nbsp
+        <label for="房屋朝向">房屋朝向
+            <select id="direction" name="direction">
+                <option value="选项">--</option>
+                <option value="东">东</option>
+                <option value="东北">东北</option>
+                <option value="东南">东南</option>
+                <option value="北">北</option>
+                <option value="南">南</option>
+                <option value="西">西</option>
+                <option value="西北">西北</option>
+                <option value="西南">西南</option>
+                <option value="其他">其他</option>
+            </select>
+        </label>&nbsp&nbsp&nbsp&nbsp
+        <label for="楼层属性">楼层属性
+            <select id="house" name="house">
+                <option value="选项">--</option>
+                <option value="低楼层 ">低</option>
+                <option value="中楼层 ">中</option>
+                <option value="高楼层 ">高</option>
+            </select>
+        </label>&nbsp&nbsp&nbsp&nbsp
+        <label for="总楼层">总楼层
+            <select id="height" name="height">
+                <option value="选项">--</option>
+                <option value="0">1-20</option>
+                <option value="1">20-40</option>
+                <option value="2">40-60</option>
+                <option value="3">大于60</option>
+            </select>
+        </label>&nbsp&nbsp&nbsp&nbsp
+        <label for="装修">装修
+            <select id="decoration" name="decoration">
+                <option value="选项">--</option>
+                <option value="精装">精装</option>
+                <option value="简装">简装</option>
+                <option value="毛坯">毛坯</option>
+                <option value="其他">其他</option>
+            </select>
+        </label>
+    </div>
+    <div>
+     <span class="areafilter">建筑面积(平方米)
+         <input id="areamin" type="text" size="10" role="minValue">
+         <span>-</span>
+      <input id="areamax" type="text" size="10" role="maxValue">
+     </span>
+        <span class="avgpricefilter">单价(元/平米)
+         <input id="avgmin" type="text" size="10" role="minValue">
+         <span>-</span>
+      <input id="avgmax" type="text" size="10" role="maxValue">
+     </span>
+        <span class="totalfilter">总价(万)
+         <input id="totalmin" type="text" size="10" role="minValue">
+         <span>-</span>
+      <input id="totalmax" type="text" size="10" role="maxValue">
+     </span>
+        <button type="button" class="btn btn-default btn-sm" id="query">查询</button>
+    </div>
+    <br>
+
+    <table class="table table-bordered" id="houseinfo" style="width:1100px;height:800px">
+
+    </table>
+
+    <div class="setPageDiv">
+        <div class="m-style" id="pagination"></div>
+    </div>
+
+</div>
+
+
+<script>
+{#    var pagedata=15#}
+{#    var total#}
+{#    $(function () {#}
+{#        $("#query").on('click', function (event) {#}
+{##}
+{#            $.ajax({#}
+{#                type: "GET",#}
+{#                url: "/sechouseinfo/query/",#}
+{#                data: {#}
+{#                    Region: $("#region").val(),#}
+{#                    Room: $("#room").val(),#}
+{#                    Living: $("#living").val(),#}
+{#                    Bath: $("#bath").val(),#}
+{#                    Direction: $("#direction").val(),#}
+{#                    House: $("#house").val(),#}
+{#                    Height: $("#height").val(),#}
+{#                    Decoration: $("#decoration").val(),#}
+{#                    Areamin: $("#areamin").val(),#}
+{#                    Areamax: $("#areamax").val(),#}
+{#                    Avgmin: $("#avgmin").val(),#}
+{#                    Avgmax: $("#avgmax").val(),#}
+{#                    Totalmin: $("#totalmin").val(),#}
+{#                    Totalmax: $("#totalmax").val(),#}
+{#                },#}
+{#                dataType: 'json',#}
+{#                success: function (data) {#}
+                    {#                    alert(data.name.length)#}
+{#                    var showNum = 15;#}
+{#                    var dataL = data.name.length;#}
+{#                    var pageNum = Math.ceil(dataL / showNum);#}
+                    {#                    alert(pageNum)#}
+{#                    $('.Pagination').pagination({#}
+{#                        totalData: data.name.length,#}
+{#                        showData: 15,#}
+{#                        num_edge_entries: 1, //边缘页数#}
+{#                        num_display_entries: 4, //主体页数#}
+{#                        items_per_page: 1, //每页显示1项#}
+{#                        prev_text: "上一页",#}
+{#                        next_text: "下一页",#}
+{#                    })#}
+{#                   total=data.name.length#}
+{#                }#}
+{#            })#}
+{#        })#}
+{##}
+{#    })#}
+{##}
+{#var total#}
+{# $.ajax({#}
+{#     type: "GET",#}
+{#     url: "/sechouseinfo/query/",#}
+{#     data: {#}
+{#         Region: $("#region").val(),#}
+{#         Room: $("#room").val(),#}
+{#         Living: $("#living").val(),#}
+{#         Bath: $("#bath").val(),#}
+{#         Direction: $("#direction").val(),#}
+{#         House: $("#house").val(),#}
+{#         Height: $("#height").val(),#}
+{#         Decoration: $("#decoration").val(),#}
+{#         Areamin: $("#areamin").val(),#}
+{#         Areamax: $("#areamax").val(),#}
+{#         Avgmin: $("#avgmin").val(),#}
+{#         Avgmax: $("#avgmax").val(),#}
+{#         Totalmin: $("#totalmin").val(),#}
+{#         Totalmax: $("#totalmax").val(),#}
+{#     },#}
+{#     dataType: 'json',#}
+{#     success: function (data) {#}
+{#         total = data.name.length#}
+{#     }#}
+{# })#}
+
+     PageCallback(0)
+{#     alert(Total)#}
+    $('.m-style').pagination({
+        totalData: 300,
+        showData: 15,
+        current_page:0,
+        num_edge_entries: 1, //边缘页数
+        num_display_entries: 4, //主体页数
+        items_per_page: 1, //每页显示1项
+        prev_text: "上一页",
+        next_text: "下一页",
+        callback:function (api){
+               $.ajax({
+                  type: "GET",
+                  url: "/sechouseinfo/query/",
+                  data: {
+                      Region: $("#region").val(),
+                      Room: $("#room").val(),
+                      Living: $("#living").val(),
+                      Bath: $("#bath").val(),
+                      Direction: $("#direction").val(),
+                      House: $("#house").val(),
+                      Height: $("#height").val(),
+                      Decoration: $("#decoration").val(),
+                      Areamin: $("#areamin").val(),
+                      Areamax: $("#areamax").val(),
+                      Avgmin: $("#avgmin").val(),
+                      Avgmax: $("#avgmax").val(),
+                      Totalmin: $("#totalmin").val(),
+                      Totalmax: $("#totalmax").val(),
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      {#                    alert(data.name.length)#}
+                      var total = data.name.length;
+                      var showNum = 15;
+                      var dataL = data.name.length
+                      {#                    alert(s)#}
+                      $("#houseinfo").empty();
+                      title = '<th>' + "小区名称" + "</th>" + '<th>' + "区" + "</th>" + '<th>' + "地" + "</th>" + '<th>' + "室" + "</th>" + '<th>' + "厅" + "</th>" + '<th>' + "厨" + "</th>" + '<th>' + "卫" + "</th>" + '<th>' + "建筑面积(㎡)" + "</th>" + '<th>' + "单价(元/平米)" + "</th>" + '<th>' + "总价(万)" + "</th>" + '<th>' + "房屋朝向" + "</th>" + '<th>' + "楼层属性" + "</th>" + '<th>' + "所在楼层" + "</th>" + '<th>' + "装修情况" + "</th>" + '<th>' + "参考房价" + "</th>"
+                      $("#houseinfo").append('<tr>' + title + '</tr>');
+                      var index=api.getCurrent()-1
+                      for (var i = showNum * index; i < showNum * index + showNum; i++) {
+                          //console.log(i)
+                          if (i < dataL) {
+
+                              var simple, complex
+                              var direct
+                              var heighmid
+                              var heighlow
+                              if (data.decoration[i] == '精装') {
+                                  simple = 0.0;
+                                  complex = 1.0;
+                              }
+                              else if (data.decoration[i] == '简装') {
+                                  complex = 0.0;
+                                  simple = 1.0;
+                              }
+                              else {
+                                  simple = 0.0;
+                                  complex = 0.0;
+                              }
+                              if (data.direction[i] == '南') {
+                                  direct = 1.0;
+                              }
+                              else {
+                                  direct = 0.0;
+                              }
+                              if (data.house[i] == "中楼层 ") {
+                                  heighmid = 1.0;
+                                  heighlow = 0.0;
+
+
+                              }
+                              else if (data.house[i] == "低楼层 ") {
+
+                                  heighmid = 0.0;
+                                  heighlow = 1.0;
+
+                              }
+                              else {
+                                  heighmid = 0.0;
+                                  heighlow = 0.0;
+                              }
+
+                              reference = data.area[i] * 8.8 + parseFloat(data.avgprice[i]) * 1.0768 / 100 - parseFloat(data.room[i]) * 57 - parseFloat(data.living[i]) * 63 - parseFloat(data.bath[i]) * 14.2 - 19.78 * simple - 25.67 * complex + 22 * direct - 5 * heighmid - 20.5 * heighlow - 625.4
+                              {#                             Math.round(parseFloat(reference))#}
+                              {#                            alert(Math.round(reference))#}
+                              var row;
+                              {#                            s=parseFloat(12.34)#}
+                              if (Math.round(reference) > parseInt(data.total[i])) {
+                                  row = '<td><a href=' + data.href[i] + '>' + data.name[i] + '</a></td>' + '<td>' + data.region[i] + '</td>' + '<td>' + data.place[i] + '</td>' + '<td>' + data.room[i] + '</td>' + '<td>' + data.living[i] + '</td>' + '<td>' + data.kitchen[i] + '</td>' + '<td>' + data.bath[i] + '</td>' + '<td>' + Math.round(data.area[i]) + '</td>' + '<td>' + data.avgprice[i] + '</td>' + '<td>' + data.total[i] + '</td>' + '<td>' + data.direction[i] + '</td>' + '<td>' + data.house[i] + '</td>' + '<td>' + data.height[i] + '</td>' + '<td>' + data.decoration[i] + '</td>' + '<td style="color:red">' + Math.round(reference) + '</td>'
+                              }
+                              else {
+                                  row = '<td><a href=' + data.href[i] + '>' + data.name[i] + '</a></td>' + '<td>' + data.region[i] + '</td>' + '<td>' + data.place[i] + '</td>' + '<td>' + data.room[i] + '</td>' + '<td>' + data.living[i] + '</td>' + '<td>' + data.kitchen[i] + '</td>' + '<td>' + data.bath[i] + '</td>' + '<td>' + Math.round(data.area[i]) + '</td>' + '<td>' + data.avgprice[i] + '</td>' + '<td>' + data.total[i] + '</td>' + '<td>' + data.direction[i] + '</td>' + '<td>' + data.house[i] + '</td>' + '<td>' + data.height[i] + '</td>' + '<td>' + data.decoration[i] + '</td>' + '<td style="color:green">' + Math.round(reference) + '</td>'
+                              }
+                              $("#houseinfo").append('<tr>' + row + '</tr>');
+
+                          }
+                      }
+
+
+                  }
+              })
+        }
+    })
+
+        function PageCallback(index) {
+          $("#query").click(function() {
+              $.ajax({
+                  type: "GET",
+                  url: "/sechouseinfo/query/",
+                  data: {
+                      Region: $("#region").val(),
+                      Room: $("#room").val(),
+                      Living: $("#living").val(),
+                      Bath: $("#bath").val(),
+                      Direction: $("#direction").val(),
+                      House: $("#house").val(),
+                      Height: $("#height").val(),
+                      Decoration: $("#decoration").val(),
+                      Areamin: $("#areamin").val(),
+                      Areamax: $("#areamax").val(),
+                      Avgmin: $("#avgmin").val(),
+                      Avgmax: $("#avgmax").val(),
+                      Totalmin: $("#totalmin").val(),
+                      Totalmax: $("#totalmax").val(),
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      {#                    alert(data.name.length)#}
+                      var total = data.name.length;
+                      var showNum = 15;
+                      var dataL = data.name.length
+                      {#                    alert(s)#}
+                      $("#houseinfo").empty();
+                      title = '<th>' + "小区名称" + "</th>" + '<th>' + "区" + "</th>" + '<th>' + "地" + "</th>" + '<th>' + "室" + "</th>" + '<th>' + "厅" + "</th>" + '<th>' + "厨" + "</th>" + '<th>' + "卫" + "</th>" + '<th>' + "建筑面积(㎡)" + "</th>" + '<th>' + "单价(元/平米)" + "</th>" + '<th>' + "总价(万)" + "</th>" + '<th>' + "房屋朝向" + "</th>" + '<th>' + "楼层属性" + "</th>" + '<th>' + "所在楼层" + "</th>" + '<th>' + "装修情况" + "</th>" + '<th>' + "参考房价" + "</th>"
+                      $("#houseinfo").append('<tr>' + title + '</tr>');
+                      {#                    var index=api.getCurrent()-1#}
+                      for (var i = showNum * index; i < showNum * index + showNum; i++) {
+                          //console.log(i)
+                          if (i < dataL) {
+
+                              var simple, complex
+                              var direct
+                              var heighmid
+                              var heighlow
+                              if (data.decoration[i] == '精装') {
+                                  simple = 0.0;
+                                  complex = 1.0;
+                              }
+                              else if (data.decoration[i] == '简装') {
+                                  complex = 0.0;
+                                  simple = 1.0;
+                              }
+                              else {
+                                  simple = 0.0;
+                                  complex = 0.0;
+                              }
+                              if (data.direction[i] == '南') {
+                                  direct = 1.0;
+                              }
+                              else {
+                                  direct = 0.0;
+                              }
+                              if (data.house[i] == "中楼层 ") {
+                                  heighmid = 1.0;
+                                  heighlow = 0.0;
+
+
+                              }
+                              else if (data.house[i] == "低楼层 ") {
+
+                                  heighmid = 0.0;
+                                  heighlow = 1.0;
+
+                              }
+                              else {
+                                  heighmid = 0.0;
+                                  heighlow = 0.0;
+                              }
+
+                              reference = data.area[i] * 8.8 + parseFloat(data.avgprice[i]) * 1.0768 / 100 - parseFloat(data.room[i]) * 57 - parseFloat(data.living[i]) * 63 - parseFloat(data.bath[i]) * 14.2 - 19.78 * simple - 25.67 * complex + 22 * direct - 5 * heighmid - 20.5 * heighlow - 625.4
+                              {#                             Math.round(parseFloat(reference))#}
+                              {#                            alert(Math.round(reference))#}
+                              var row;
+                              {#                            s=parseFloat(12.34)#}
+                              if (Math.round(reference) > parseInt(data.total[i])) {
+                                  row = '<td><a href=' + data.href[i] + '>' + data.name[i] + '</a></td>' + '<td>' + data.region[i] + '</td>' + '<td>' + data.place[i] + '</td>' + '<td>' + data.room[i] + '</td>' + '<td>' + data.living[i] + '</td>' + '<td>' + data.kitchen[i] + '</td>' + '<td>' + data.bath[i] + '</td>' + '<td>' + Math.round(data.area[i]) + '</td>' + '<td>' + data.avgprice[i] + '</td>' + '<td>' + data.total[i] + '</td>' + '<td>' + data.direction[i] + '</td>' + '<td>' + data.house[i] + '</td>' + '<td>' + data.height[i] + '</td>' + '<td>' + data.decoration[i] + '</td>' + '<td style="color:red">' + Math.round(reference) + '</td>'
+                              }
+                              else {
+                                  row = '<td><a href=' + data.href[i] + '>' + data.name[i] + '</a></td>' + '<td>' + data.region[i] + '</td>' + '<td>' + data.place[i] + '</td>' + '<td>' + data.room[i] + '</td>' + '<td>' + data.living[i] + '</td>' + '<td>' + data.kitchen[i] + '</td>' + '<td>' + data.bath[i] + '</td>' + '<td>' + Math.round(data.area[i]) + '</td>' + '<td>' + data.avgprice[i] + '</td>' + '<td>' + data.total[i] + '</td>' + '<td>' + data.direction[i] + '</td>' + '<td>' + data.house[i] + '</td>' + '<td>' + data.height[i] + '</td>' + '<td>' + data.decoration[i] + '</td>' + '<td style="color:green">' + Math.round(reference) + '</td>'
+                              }
+                              $("#houseinfo").append('<tr>' + row + '</tr>');
+
+                          }
+                      }
+
+
+                  }
+              })
+
+{#              return total#}
+          });
+        }
+
+</script>
+</body>
+</html>
+
+
+

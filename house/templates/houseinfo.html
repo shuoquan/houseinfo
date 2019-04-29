@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>房价信息</title>
+    <script type="text/javascript" src="../static/js/echarts.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div class="container">
+<div id="avgprice" style="width:1200px; height: 350px;margin-left:50px"></div>
+<div id="housedistribute" style="width:1200px; height: 350px;margin-left:50px"></div>
+</div>
+<script>
+    var avgpricechart = echarts.init(document.getElementById('avgprice'));
+     var housedistributechart = echarts.init(document.getElementById('housedistribute'));
+
+        $.ajax(
+            {
+                url: "/houseinfo/getdata",
+                type: 'get',
+                dataType: "json",
+                success: function (data) {
+                    {#                    var houseinfo = JSON.parse(data);#}
+                    {#                    var area = []#}
+                    {#                    var avg_price = []#}
+                    {#                    var total = []#}
+                    {#                    for (var i = 0; i < houseinfo.length; i++) {#}
+                    {#                        area.push(houseinfo[i][0]);#}
+                    {#                        avg_price.push(houseinfo[i][1]);#}
+                    {#                        total.push(houseinfo[i][2]);#}
+                    {#                    }#}
+                    var avgpriceopinion = {
+                        title: {
+                            text: "各地区均价"
+                        },
+                        tooltip: {},
+                        xAxis: {
+                            name: '地区',
+                            data: data.area,
+                        },
+                        yAxis: {},
+                        series: [{
+                            name: '均价',
+                            type: 'bar',
+                            data: data.avg_price,
+                        }]
+                    };
+                      var servicedata=[];
+                    for(var i=0;i<data.area.length;i++)
+                    {
+                        var obj=new Object();
+                        obj.name=data.area[i];
+                        obj.value=data.total[i];
+                        servicedata[i]=obj;
+                    }
+                    var housedistributeopinion = {
+                        title: {
+                            text: "各地区二手房总量"
+                        },
+                        tooltip: {},
+                        legend: {
+                            orient: 'vertical',
+                            x: 'right',
+                            data: data.area,
+                        },
+                        series: [{
+                            name: '二手房总量',
+                            type: 'pie',
+                            radius:'60%',
+                            data:servicedata,
+                        }]
+                    };
+                    avgpricechart.setOption(avgpriceopinion);
+                    housedistributechart.setOption(housedistributeopinion);
+                }
+            }
+        )
+
+</script>
+</body>
+</html>

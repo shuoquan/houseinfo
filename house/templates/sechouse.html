@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>二手房信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="../static/js/jquery.pagination.js"></script>
+    <style>
+        .m-style {
+    position: relative;
+    text-align: center;
+    zoom: 1;
+}
+
+.m-style:before,
+.m-style:after {
+    content: "";
+    display: table;
+}
+
+.m-style:after {
+    clear: both;
+    overflow: hidden;
+}
+
+{#.m-style span {#}
+{#    float: left;#}
+{#    margin: 0 5px;#}
+{#    width: 38px;#}
+{#    height: 38px;#}
+{#    line-height: 38px;#}
+{#    color: #bdbdbd;#}
+{#    font-size: 14px;#}
+{#}#}
+
+.m-style .active {
+    float: left;
+    margin: 0 5px;
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    background: #e91e63;
+    color: #fff;
+    font-size: 14px;
+    border: 1px solid #e91e63;
+}
+
+.m-style a {
+    float: left;
+    margin: 0 5px;
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    background: #fff;
+    border: 1px solid #ebebeb;
+    color: #bdbdbd;
+    font-size: 14px;
+}
+
+.m-style a:hover {
+    color: #fff;
+    background: #e91e63;
+}
+
+.m-style .next,
+.m-style .prev {
+    font-family: "Simsun";
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.now,
+.count {
+    padding: 0 5px;
+    color: #f00;
+}
+
+.eg img {
+    max-width: 800px;
+    min-height: 500px;
+}
+
+{#input {#}
+{#    float: left;#}
+{#    margin: 0 5px;#}
+{#    width: 38px;#}
+{#    height: 38px;#}
+{#    line-height: 38px;#}
+{#    text-align: center;#}
+{#    background: #fff;#}
+{#    border: 1px solid #ebebeb;#}
+{#    outline: none;#}
+{#    color: #bdbdbd;#}
+{#    font-size: 14px;#}
+{#}#}
+
+    </style>
+</head>
+<body>
+<div class="container">
+     <table class="table table-bordered" id="sechouseinfo" style="width:1100px;height:700px">
+
+    </table>
+
+    <div class="setPageDiv">
+        <div class="m-style" id="pagination"></div>
+    </div>
+</div>
+<script>
+  var getdata=localStorage.getItem("currentlocation");
+  var total;
+   $.ajax({
+        type:"GET",
+        url:"/getsechouse/",
+        data:{
+            currentlocation:getdata,
+        },
+        dataType:'json',
+        success:function(data){
+            total=data.name.length;
+            if(total>0){
+                 for (var i = 0; i < 10; i++) {
+                          //console.log(i)
+                          if (i < total) {
+                              var row;
+
+                              row = '<td><a href=' + data.href[i] + '>' + data.name[i] + '</a></td>' + '<td>' + data.region[i] + '</td>' + '<td>' + data.place[i] + '</td>' + '<td>' + data.room[i] + '</td>' + '<td>' + data.living[i] + '</td>' + '<td>' + data.kitchen[i] + '</td>' + '<td>' + data.bath[i] + '</td>' + '<td>' + Math.round(data.area[i]) + '</td>' + '<td>' + data.avgprice[i] + '</td>' + '<td>' + data.total[i] + '</td>' + '<td>' + data.direction[i] + '</td>' + '<td>' + data.house[i] + '</td>' + '<td>' + data.height[i] + '</td>' + '<td>' + data.decoration[i] + '</td>'
+
+
+                              $("#sechouseinfo").append('<tr>' + row + '</tr>');
+
+                          }
+                      }
+            }
+        }
+    })
+     $('.m-style').pagination({
+        totalData: total,
+        showData: 10,
+        current_page:0,
+        num_edge_entries: 1, //边缘页数
+        num_display_entries: 4, //主体页数
+        items_per_page: 1, //每页显示1项
+        prev_text: "上一页",
+        next_text: "下一页",
+        callback:function (api){
+               $.ajax({
+                  type: "GET",
+                  url: "/getsechouse/",
+                  data: {
+                      currentlocation:getdata,
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                      {#                    alert(data.name.length)#}
+                      var showNum = 10;
+                      var dataL = data.name.length
+                      {#                    alert(s)#}
+                      $("#sechouseinfo").empty();
+                      title = '<th>' + "小区名称" + "</th>" + '<th>' + "区" + "</th>" + '<th>' + "地" + "</th>" + '<th>' + "室" + "</th>" + '<th>' + "厅" + "</th>" + '<th>' + "厨" + "</th>" + '<th>' + "卫" + "</th>" + '<th>' + "建筑面积(㎡)" + "</th>" + '<th>' + "单价(元/平米)" + "</th>" + '<th>' + "总价(万)" + "</th>" + '<th>' + "房屋朝向" + "</th>" + '<th>' + "楼层属性" + "</th>" + '<th>' + "所在楼层" + "</th>" + '<th>' + "装修情况" + "</th>"
+                      $("#sechouseinfo").append('<tr>' + title + '</tr>');
+                      var index=api.getCurrent()-1
+                      for (var i = showNum * index; i < showNum * index + showNum; i++) {
+                          //console.log(i)
+                          if (i < dataL) {
+                              var row;
+
+                              row = '<td><a href=' + data.href[i] + '>' + data.name[i] + '</a></td>' + '<td>' + data.region[i] + '</td>' + '<td>' + data.place[i] + '</td>' + '<td>' + data.room[i] + '</td>' + '<td>' + data.living[i] + '</td>' + '<td>' + data.kitchen[i] + '</td>' + '<td>' + data.bath[i] + '</td>' + '<td>' + Math.round(data.area[i]) + '</td>' + '<td>' + data.avgprice[i] + '</td>' + '<td>' + data.total[i] + '</td>' + '<td>' + data.direction[i] + '</td>' + '<td>' + data.house[i] + '</td>' + '<td>' + data.height[i] + '</td>' + '<td>' + data.decoration[i] + '</td>'
+
+
+                              $("#sechouseinfo").append('<tr>' + row + '</tr>');
+
+                          }
+                      }
+
+
+                  }
+              })
+        }
+    })
+
+</script>
+
+
+</body>
+</html>
